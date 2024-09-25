@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:xsis_test/feature/home/presentation/page/home_page.dart';
 
 class Routes {
-  static const String moviePage = '/';
+  static const String homePage = '/';
 }
 
 // Map<String, Widget Function(BuildContext)> appRoutes = {
@@ -10,13 +11,13 @@ class Routes {
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    // case Routes.moviePage:
-    //   return MaterialPageRoute(
-    //     builder: (BuildContext context) => MoviePage(
-    //       data: settings.arguments,
-    //     ),
-    //     settings: settings,
-    //   );
+    case Routes.homePage:
+      return MaterialPageRoute(
+        builder: (BuildContext context) => HomePage(
+          data: settings.arguments,
+        ),
+        settings: settings,
+      );
     default:
       return MaterialPageRoute(
         builder: (BuildContext context) => const Scaffold(
