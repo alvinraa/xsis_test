@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:xsis_test/core/common/logger.dart';
+import 'package:xsis_test/core/common/navigation.dart';
+import 'package:xsis_test/core/common/routes.dart';
 import 'package:xsis_test/core/widget/appbar/default_appbar.dart';
 import 'package:xsis_test/core/widget/shimmer/default_shimmer.dart';
 import 'package:xsis_test/feature/home/presentation/widget/popular_movie_widget.dart';
@@ -56,30 +59,28 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(context),
-      body: buildContext(context),
+      body: buildContent(context),
     );
   }
 
   buildAppbar(BuildContext context) {
-    return AppBar(
-      elevation: 0,
-      // backgroundColor: Theme.of(context).colorScheme.onPrimary,
-      backgroundColor: Colors.white,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            "Netflix",
-            style:
-                Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 20),
-          ),
-        ],
+    return DefaultAppBar(
+      type: AppBarType.main,
+      leading: Text(
+        "Netflix",
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 20),
       ),
       actions: [
         // search
         GestureDetector(
           onTap: () {
+            String id = '';
+            Logger.print('id : $id');
             // nav.push(Routes.searchPage);
+            navigatorKey.currentState?.pushNamed(
+              Routes.searchPage,
+              arguments: id,
+            );
           },
           child: Container(
             margin: const EdgeInsets.fromLTRB(16, 0, 14, 0),
@@ -92,32 +93,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
-    // DefaultAppBar(
-    //   type: AppBarType.main,
-    // leading: Text(
-    //   "Netflix",
-    //   style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 20),
-    // ),
-    // actions: [
-    //   // search
-    //   GestureDetector(
-    //     onTap: () {
-    //       // nav.push(Routes.searchPage);
-    //     },
-    //     child: Container(
-    //       margin: const EdgeInsets.fromLTRB(16, 0, 14, 0),
-    //       child: Icon(
-    //         Icons.search,
-    //         color: Theme.of(context).colorScheme.secondary,
-    //         size: 28,
-    //       ),
-    //     ),
-    //   ),
-    // ],
-    // );
   }
 
-  buildContext(BuildContext context) {
+  buildContent(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
 

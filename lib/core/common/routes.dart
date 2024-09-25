@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:xsis_test/feature/home/presentation/page/home_page.dart';
+import 'package:xsis_test/feature/search/presentation/page/search_page.dart';
 
 class Routes {
   static const String homePage = '/';
+  static const String searchPage = 'search';
 }
 
 // Map<String, Widget Function(BuildContext)> appRoutes = {
@@ -14,6 +16,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Routes.homePage:
       return MaterialPageRoute(
         builder: (BuildContext context) => HomePage(
+          data: settings.arguments,
+        ),
+        settings: settings,
+      );
+    case Routes.searchPage:
+      return MaterialPageRoute(
+        builder: (BuildContext context) => SearchPage(
           data: settings.arguments,
         ),
         settings: settings,
