@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:xsis_test/core/common/constant.dart';
+import 'package:xsis_test/core/common/helper.dart';
 import 'package:xsis_test/core/common/navigation.dart';
 import 'package:xsis_test/core/common/routes.dart';
 import 'package:xsis_test/core/widget/appbar/default_appbar.dart';
@@ -152,7 +153,6 @@ class _HomePageState extends State<HomePage> {
                     GestureDetector(
                       onTap: () async {
                         //  onTapSeeAll(context);
-                        onTapItem(context);
                       },
                       child: Text(
                         "see all",
@@ -624,6 +624,7 @@ class _HomePageState extends State<HomePage> {
     return PopularMovieWidget(
       onTap: () {
         // show dialog content
+        onTapItem(context, item);
       },
       imageUrl: '${Constant.baseImageUrl}${item.posterPath}',
       movieName: item.title ?? '-',
@@ -634,6 +635,7 @@ class _HomePageState extends State<HomePage> {
     return TopRatedMovieWidget(
       onTap: () {
         // show dialog content
+        onTapItem(context, item);
       },
       imageUrl: '${Constant.baseImageUrl}${item.posterPath}',
       movieName: item.title ?? '-',
@@ -644,6 +646,7 @@ class _HomePageState extends State<HomePage> {
     return UpcomingMovieWidget(
       onTap: () {
         // show dialog content
+        onTapItem(context, item);
       },
       imageUrl: '${Constant.baseImageUrl}${item.posterPath}',
       movieName: item.title ?? '-',
@@ -661,7 +664,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<dynamic> onTapItem(BuildContext context) {
+  Future<dynamic> onTapItem(BuildContext context, MovieModel item) {
     var textTheme = Theme.of(context).textTheme;
     var colorScheme = Theme.of(context).colorScheme;
 
@@ -735,7 +738,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          "The Crow",
+                          item.title ?? '',
                           style: GoogleFonts.lato(
                             textStyle: textTheme.labelLarge?.copyWith(
                               fontSize: 24,
@@ -746,7 +749,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "iMBD Rating 6.77/100 (356) ",
+                          "iMBD Rating ${item.voteAverage}/10 (${item.voteCount}) ",
                           style: GoogleFonts.lato(
                             textStyle: textTheme.labelLarge?.copyWith(
                               fontSize: 14,
@@ -755,7 +758,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          "Popularity 2177.43",
+                          "Popularity ${item.popularity}",
                           style: GoogleFonts.lato(
                             textStyle: textTheme.labelLarge?.copyWith(
                               fontSize: 14,
@@ -763,13 +766,28 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 2),
-                        Text(
-                          "Release 2024-08-21",
-                          style: GoogleFonts.lato(
-                            textStyle: textTheme.labelLarge?.copyWith(
-                              fontSize: 14,
+                        Row(
+                          children: [
+                            Text(
+                              "Release ",
+                              style: GoogleFonts.lato(
+                                textStyle: textTheme.labelLarge?.copyWith(
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
-                          ),
+                            Expanded(
+                              child: Text(
+                                Helper.formatDateTime(item.releaseDate,
+                                    format: 'dd MMM yyyy'),
+                                style: GoogleFonts.lato(
+                                  textStyle: textTheme.labelLarge?.copyWith(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -784,7 +802,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Soulmates Eric and Shelly are brutally murdered when the demons of her dark past catch up with them. Given the chance to save his true love by sacrificing himself, Eric sets out to seek merciless revenge on their killers, traversing the worlds of the living and the dead to put the wrong things right.",
+                          item.overview ?? '',
                           style: GoogleFonts.lato(
                             textStyle: textTheme.labelLarge?.copyWith(
                               fontSize: 14,
