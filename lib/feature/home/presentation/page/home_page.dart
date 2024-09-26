@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:xsis_test/core/common/logger.dart';
@@ -9,6 +10,7 @@ import 'package:xsis_test/core/widget/shimmer/default_shimmer.dart';
 import 'package:xsis_test/feature/home/presentation/widget/popular_movie_widget.dart';
 import 'package:xsis_test/feature/home/presentation/widget/top_rated_movie_widget.dart';
 import 'package:xsis_test/feature/home/presentation/widget/upcoming_movie_widget.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class HomePage extends StatefulWidget {
   final dynamic data;
@@ -48,6 +50,20 @@ class _HomePageState extends State<HomePage> {
 
   // for favMovie slider
   final PageController nowPlayingMovieController = PageController();
+  // for video
+  YoutubePlayerController? _ytbPlayerController;
+
+  @override
+  void initState() {
+    super.initState();
+    // do something for init
+    _ytbPlayerController = YoutubePlayerController(
+      initialVideoId: '6ZfuNTqbHE8',
+      params: const YoutubePlayerParams(
+        showFullscreenButton: true,
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -222,8 +238,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         // not yet
+                        onTapItem(context);
                       },
                       child: Text(
                         "see all",
@@ -389,6 +406,149 @@ class _HomePageState extends State<HomePage> {
       },
       imageUrl: item['imageUrl'] ?? 'https://placehold.co/60x60.png',
       movieName: item['movieName'] ?? '-',
+    );
+  }
+
+  Future<dynamic> onTapItem(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+    var colorScheme = Theme.of(context).colorScheme;
+
+    _ytbPlayerController?.onEnterFullscreen = () {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+    };
+    _ytbPlayerController?.onExitFullscreen = () {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    };
+
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      isDismissible: true,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              reverse: true,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: colorScheme.onPrimary,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: SafeArea(
+                    child: ListView(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      children: [
+                        // line
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                            child: Container(
+                              width: 32,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade500,
+                                  borderRadius: BorderRadius.circular(30)),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        // the content
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 300,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: YoutubePlayerIFrame(
+                              controller: _ytbPlayerController,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "The Crow",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: colorScheme.secondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "iMBD Rating 6.77/100 (356) ",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "Popularity 2177.43",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "Release 2024-08-21",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "Synopsis",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w500,
+                              color: colorScheme.secondary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Soulmates Eric and Shelly are brutally murdered when the demons of her dark past catch up with them. Given the chance to save his true love by sacrificing himself, Eric sets out to seek merciless revenge on their killers, traversing the worlds of the living and the dead to put the wrong things right.",
+                          style: GoogleFonts.lato(
+                            textStyle: textTheme.labelLarge?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
