@@ -9,6 +9,7 @@ import 'package:xsis_test/feature/home/bloc/now_playing_movie_list/now_playing_m
 import 'package:xsis_test/feature/home/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:xsis_test/feature/home/bloc/top_rated_movie/top_rated_movie_bloc.dart';
 import 'package:xsis_test/feature/home/bloc/upcoming_movie/upcoming_movie_bloc.dart';
+import 'package:xsis_test/feature/search/bloc/search_bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -38,6 +39,7 @@ class AppState extends State<App> {
         BlocProvider(create: (context) => PopularMovieListBloc()),
         BlocProvider(create: (context) => TopRatedMovieListBloc()),
         BlocProvider(create: (context) => UpcomingMovieListBloc()),
+        BlocProvider(create: (context) => SearchBloc()),
       ],
       child: MaterialApp(
         title: 'Xsis',

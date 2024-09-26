@@ -1,14 +1,10 @@
 class MovieDbResponse {
   int? page;
   List<MovieModel>? results;
-  int? totalPages;
-  int? totalResults;
 
   MovieDbResponse({
     this.page,
     this.results,
-    this.totalPages,
-    this.totalResults,
   });
 
   factory MovieDbResponse.fromJson(Map<String, dynamic> json) =>
@@ -18,8 +14,6 @@ class MovieDbResponse {
             ? []
             : List<MovieModel>.from(
                 json["results"]!.map((x) => MovieModel.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -27,8 +21,6 @@ class MovieDbResponse {
         "results": results == null
             ? []
             : List<dynamic>.from(results!.map((x) => x.toJson())),
-        "total_pages": totalPages,
-        "total_results": totalResults,
       };
 }
 
@@ -77,7 +69,7 @@ class MovieModel {
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
         posterPath: json["poster_path"],
-        releaseDate: json["release_date"] == null
+        releaseDate: json["release_date"] == null || json["release_date"] == ''
             ? null
             : DateTime.parse(json["release_date"]),
         title: json["title"],

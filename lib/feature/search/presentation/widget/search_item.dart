@@ -28,7 +28,8 @@ class SearchItem extends StatelessWidget {
           // text
           Text(
             movieName,
-            maxLines: 1,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.lato(
               textStyle: textTheme.labelLarge?.copyWith(
                 color: colorScheme.secondary,
@@ -39,33 +40,35 @@ class SearchItem extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              imageUrl,
-              width: 120,
-              height: 150,
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                } else {
-                  return const DefaultShimmer(
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageUrl,
+                width: 120,
+                height: 150,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return const DefaultShimmer(
+                      width: 120,
+                      height: 150,
+                    );
+                  }
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                    'https://placehold.co/80x80.png',
                     width: 120,
                     height: 150,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
                   );
-                }
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Image.network(
-                  'https://placehold.co/80x80.png',
-                  width: 120,
-                  height: 150,
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                );
-              },
+                },
+              ),
             ),
           ),
         ],

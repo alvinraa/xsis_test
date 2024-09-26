@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     // init for yt video
     _ytbPlayerController = YoutubePlayerController(
+      // note: the video base on this initialId, i dont found any open source that provide youtube. so i hardcode it
       initialVideoId: '6ZfuNTqbHE8',
       params: const YoutubePlayerParams(
         showFullscreenButton: true,
