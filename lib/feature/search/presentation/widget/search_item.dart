@@ -61,10 +61,10 @@ class SearchItem extends StatelessWidget {
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Image.network(
-                    'https://placehold.co/80x80.png',
+                    'https://placehold.co/120x150.png',
                     width: 120,
                     height: 150,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                     alignment: Alignment.center,
                   );
                 },

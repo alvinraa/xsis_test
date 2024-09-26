@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        //  onTapSeeAll(context);
+                        onTapSeeAll(context);
                       },
                       child: Text(
                         "see all",
@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // onTapSeeAll(context);
+                        onTapSeeAll(context);
                       },
                       child: Text(
                         "see all",
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // onTapSeeAll(context);
+                        onTapSeeAll(context);
                       },
                       child: Text(
                         "see all",
@@ -267,6 +267,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 builder: upcomingMovieBuilder,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -288,8 +289,8 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.only(right: item == 5 ? 0 : 8),
                   child: const DefaultShimmer(
-                    height: 90,
                     width: 90,
+                    height: 140,
                     borderRadius: 12,
                   ),
                 ),
@@ -357,8 +358,8 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.only(right: item == 5 ? 0 : 8),
                   child: const DefaultShimmer(
-                    height: 90,
-                    width: 90,
+                    height: 140,
+                    width: 240,
                     borderRadius: 12,
                   ),
                 ),
@@ -426,8 +427,8 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.only(right: item == 5 ? 0 : 8),
                   child: const DefaultShimmer(
-                    height: 90,
                     width: 90,
+                    height: 140,
                     borderRadius: 12,
                   ),
                 ),
@@ -487,7 +488,7 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: DefaultShimmer(
           width: MediaQuery.of(context).size.width * 0.9,
-          height: 160,
+          height: 280,
         ),
       );
     }
@@ -520,8 +521,8 @@ class _HomePageState extends State<HomePage> {
         // content
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-          height: 160,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          height: 200,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             color: colorScheme.onPrimary,
@@ -539,26 +540,26 @@ class _HomePageState extends State<HomePage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      height: 160,
+                      height: 200,
                       width: 140,
-                      // change to image from API
                       '${Constant.baseImageUrl}${listMovie[index].posterPath}',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) {
                           return child;
                         } else {
                           return const DefaultShimmer(
-                            height: 160,
+                            height: 200,
                             width: 140,
                           );
                         }
                       },
                       errorBuilder: (context, error, stackTrace) {
                         return Image.network(
-                          'https://placehold.co/600x400.png',
+                          'https://placehold.co/600x400?text=No+Image',
                           fit: BoxFit.cover,
-                          height: 160,
+                          height: 200,
                           width: 140,
                         );
                       },
@@ -583,14 +584,16 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          listMovie[index].overview ?? '',
-                          softWrap: true,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.lato(
-                            textStyle: textTheme.labelLarge?.copyWith(
-                              fontSize: 12,
+                        Expanded(
+                          child: Text(
+                            listMovie[index].overview ?? '',
+                            softWrap: true,
+                            maxLines: 7,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.lato(
+                              textStyle: textTheme.labelLarge?.copyWith(
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ),
@@ -638,7 +641,7 @@ class _HomePageState extends State<HomePage> {
         // show dialog content
         onTapItem(context, item);
       },
-      imageUrl: '${Constant.baseImageUrl}${item.posterPath}',
+      imageUrl: '${Constant.baseImageUrl}${item.backdropPath}',
       movieName: item.title ?? '-',
     );
   }
